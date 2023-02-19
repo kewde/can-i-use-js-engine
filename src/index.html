@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    function executeCode() {
+        const codeToExecute = document.getElementById("codeToExecute").value
+        executeCodeOnEngine("hermes", codeToExecute)
+        executeCodeOnEngine("jsc", codeToExecute)
+        executeCodeOnEngine("v8", codeToExecute)
+    }
+
+    function executeCodeOnEngine(engine, codeToExecute) {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code: codeToExecute })
+        };
+        fetch(`/${engine}`, requestOptions)
+            .then((response) => response.text())
+            .then((data) => document.getElementById(engine).value = data);
+    }
+  </script>
+</head>
+<body class="p-10">
+    <textarea id="codeToExecute" rows="20" class="mt-1 block w-full rounded-md border-green-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm">
+        function Person(name, dob) {
+            this.name = name;
+            this.birthday = new Date(dob);
+            this.getAge = function() {
+                const dateDiff = Date.now() - this.birthday.getTime();
+                const ageDate = new Date(dateDiff);
+        
+                return Math.abs(ageDate.getUTCFullYear() - 1970);
+            }
+        }
+        
+        const me = new Person("Chad", '2-12-1990');
+        console.log(JSON.stringify(me));
+        console.log(me.getAge());
+        
+        const test = (val) => val ? "✅" : "❌"
+        console.log(`fetch=${test(typeof fetch  === 'function')}`)
+        console.log(`BigInt=${test(typeof BigInt === 'function')}`)
+    </textarea>
+    <button type="submit" onClick="executeCode()" class="inline-flex justify-center w-full rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">Execute</button>
+    <div class="grid grid-cols-3 gap-4">
+        <div>
+            <h1>Hermes</h1>
+            <textarea rows="10" id="hermes" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm">
+            </textarea>
+        </div>
+        <div>
+            <h1>JavaScript Core</h1>
+            <textarea rows="10" id="jsc" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm">
+            </textarea>
+        </div>
+        <div>
+            <h1>V8</h1>
+            <textarea rows="10" id="v8" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm">
+            </textarea>
+        </div>
+      </div>
+</body>
+</html>
