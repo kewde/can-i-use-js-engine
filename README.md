@@ -2,6 +2,10 @@
 
 > Run JavaScript code in multiple JavaScript engines at once to test compatibility!
 
+* Hermes v12
+* JSC 4bcb3438baef1cfe12aea6aa10c3a06a0ad5b00d
+* V8 (whatever node version you're running)
+
 ![](doc/caniuseengine.gif)
 
 ## Usage
